@@ -42,7 +42,6 @@ func _physics_process(delta: float) -> void:
 
 	velocity = direction * speed
 	move_and_slide()
-
 	_play_anim(_last_direction, direction != Vector2.ZERO)
 
 
@@ -67,16 +66,12 @@ func _start_dash() -> void:
 
 func _play_anim(direction: Vector2, walking: bool) -> void:
 	var prefix := "walk_" if walking else "idle_"
-	var anim_name: String
 	if direction.y > 0:
-		anim_name = prefix + "down"
+		anim_player.play(prefix + "down")
 		sprite.flip_h = false
 	elif direction.y < 0:
-		anim_name = prefix + "top"
+		anim_player.play(prefix + "top")
 		sprite.flip_h = false
 	else:
-		anim_name = prefix + "side"
-		# Spritesheet side = vers la droite ; on flip pour la gauche
+		anim_player.play(prefix + "side")
 		sprite.flip_h = direction.x < 0
-
-	anim_player.play(anim_name)
