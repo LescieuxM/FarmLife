@@ -1,5 +1,6 @@
-extends Node2D
 
+extends Node2D
+"""
 @export var tree_scene: PackedScene
 @export var rock_scene: PackedScene
 @export var tree_count: int = 30
@@ -52,3 +53,4 @@ func _too_close(pos: Vector2, used: Array[Vector2]) -> bool:
 		if pos.distance_to(u) < min_distance:
 			return true
 	return false
+"""

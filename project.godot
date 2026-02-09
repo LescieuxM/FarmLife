@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="FarmLife"
-run/main_scene="res://node_2d.tscn"
+run/main_scene="uid://dedv0ktyo6t7i"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SceneTransition="*res://scene_transition.gd"
 
 [display]
 

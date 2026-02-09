@@ -1,8 +1,9 @@
+class_name Player
 extends CharacterBody2D
 
 @export var speed: float = 200.0
-@export var dash_speed: float = 400.0
-@export var dash_duration: float = 0.08
+@export var dash_speed: float = 230.0
+@export var dash_duration: float = 0.8
 @export var dash_cooldown: float = 2.0
 
 var _last_direction := Vector2.DOWN
@@ -61,7 +62,19 @@ func _get_input_direction() -> Vector2:
 func _start_dash() -> void:
 	_is_dashing = true
 	_dash_timer = dash_duration
-	_play_anim(_last_direction, true)
+	_play_roll_anim(_last_direction)
+
+
+func _play_roll_anim(direction: Vector2) -> void:
+	if direction.y > 0:
+		anim_player.play("roll_down")
+		sprite.flip_h = false
+	elif direction.y < 0:
+		anim_player.play("roll_top")
+		sprite.flip_h = false
+	else:
+		anim_player.play("roll_side")
+		sprite.flip_h = direction.x < 0
 
 
 func _play_anim(direction: Vector2, walking: bool) -> void:
