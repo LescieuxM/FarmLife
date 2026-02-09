@@ -66,25 +66,35 @@ func _start_dash() -> void:
 
 
 func _play_roll_anim(direction: Vector2) -> void:
+	if not anim_player:
+		return
 	if direction.y > 0:
 		anim_player.play("roll_down")
-		sprite.flip_h = false
+		if sprite:
+			sprite.flip_h = false
 	elif direction.y < 0:
 		anim_player.play("roll_top")
-		sprite.flip_h = false
+		if sprite:
+			sprite.flip_h = false
 	else:
 		anim_player.play("roll_side")
-		sprite.flip_h = direction.x < 0
+		if sprite:
+			sprite.flip_h = direction.x < 0
 
 
 func _play_anim(direction: Vector2, walking: bool) -> void:
+	if not anim_player:
+		return
 	var prefix := "walk_" if walking else "idle_"
 	if direction.y > 0:
 		anim_player.play(prefix + "down")
-		sprite.flip_h = false
+		if sprite:
+			sprite.flip_h = false
 	elif direction.y < 0:
 		anim_player.play(prefix + "top")
-		sprite.flip_h = false
+		if sprite:
+			sprite.flip_h = false
 	else:
 		anim_player.play(prefix + "side")
-		sprite.flip_h = direction.x < 0
+		if sprite:
+			sprite.flip_h = direction.x < 0
