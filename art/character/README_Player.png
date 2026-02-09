@@ -1,0 +1,33 @@
+# Player.png  Centrage et uniformisation des frames
+
+Pour supprimer tremblements et asym�trie, chaque frame du sprite sheet doit avoir **la m�me taille** et le **personnage centr�** dans la cellule.
+
+## Rappel de la grille dans Godot
+
+- **hframes = 6**, **vframes = 10** � 6 colonnes � 10 lignes.
+- Ligne 0 : idle (colonnes 01 = down, 23 = side, 45 = top).
+- Ligne 2 : walk (colonnes 01 = down, 23 = side, 45 = top).
+
+## Dans un logiciel de dessin (Aseprite, GIMP, etc.)
+
+1. **Taille des cellules**  
+   Calcule la taille dune cellule :  
+   `largeur_cellule = largeur_image / 6`  
+   `hauteur_cellule = hauteur_image / 10`  
+   Toutes les cellules doivent faire exactement cette taille (pas de frame plus grande ou plus petite).
+
+2. **Centrer le personnage dans chaque cellule**  
+   Pour chaque frame :
+   - Place le personnage au centre de la cellule (m�me d�calage horizontal et vertical par rapport au centre de la cellule).
+   - V�rifie que les yeux et le corps sont align�s dune frame � lautre (m�me position relative au centre de la cellule).
+
+3. **Ne pas changer lapparence**  
+   Tu ne modifies que la **position** du dessin dans la cellule (d�calage pour centrer), pas les couleurs ni la forme du personnage.
+
+4. **Sauvegarder**  
+   Exporte en PNG, remplace `Player.png`, puis relance Godot.
+
+## V�rifications dans Godot
+
+- Sprite2D : **Centered = ON**, **Offset = (0, 0)** (d�j� r�gl� dans la sc�ne).
+- Les animations utilisent **2 frames par direction**, **interp = 0** (Nearest), **update = 1** (discrete) pour �viter tout d�calage � la lecture.
