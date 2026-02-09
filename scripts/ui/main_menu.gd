@@ -64,4 +64,4 @@ func _on_lobby_ready() -> void:
 	SceneTransition.transition_to("res://scenes/main_game.tscn", Vector2(120, 120))
 
 func _on_joined_lobby() -> void:
-	SceneTransition.transition_to("res://scenes/main_game.tscn", Vector2(100, 100))
+	SceneTransition.transition_to("res://scenes/main_game.tscn", Vector2(120, 120))

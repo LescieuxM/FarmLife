@@ -5,7 +5,7 @@ signal time_changed(hour: int, minute: int, darkness: float)
 ## Real seconds per in-game minute (1.0 → 24 real min = 1 game day)
 @export var seconds_per_game_minute: float = 1.0
 
-var current_hour: int = 3
+var current_hour: int = 6
 var current_minute: int = 0
 var _time_accumulator: float = 0.0
 

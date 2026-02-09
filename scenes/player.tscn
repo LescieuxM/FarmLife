@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dypirpf1e5b4j" path="res://scripts/systems/player.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://biva5r6qgclde" path="res://assets/sprites/Player_Main_All1.png" id="2_g2els"]
+[ext_resource type="Texture2D" path="res://assets/sprites/pixelart/overlayMouse.png" id="3_overlay"]
+[ext_resource type="Script" path="res://scripts/systems/tile_hover_overlay.gd" id="4_overlay_script"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_487ah"]
 radius = 4.0000005
@@ -273,3 +275,10 @@ enabled = false
 color = Color(1, 0.95, 0.8, 1)
 energy = 1.8
 texture = SubResource("GradientTexture2D_torch")
+
+[node name="TileHoverOverlay" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("3_overlay")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+script = ExtResource("4_overlay_script")
