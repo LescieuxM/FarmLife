@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://stmn5immqpnc"]
+
+[ext_resource type="Script" path="res://scenes/World.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/Tree.tscn" id="2_tree"]
+[ext_resource type="PackedScene" path="res://scenes/Rock.tscn" id="3_rock"]
+
+[node name="World" type="Node2D" unique_id=1286527028]
+script = ExtResource("1_script")
+tree_scene = ExtResource("2_tree")
+rock_scene = ExtResource("3_rock")
+
+[node name="TileMap" type="TileMap" parent="." unique_id=654148428]
+format = 2

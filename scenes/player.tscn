@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://mgeto844hxsl"]
+
+[ext_resource type="Script" uid="uid://dypirpf1e5b4j" path="res://scenes/player.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b07hefc5bkhmi" path="res://art/character/Player.png" id="1_texture"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_487ah"]
+radius = 4.0000005
+height = 12.666668
+
+[sub_resource type="Animation" id="Animation_g2els"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+
+[sub_resource type="Animation" id="Animation_qhqgy"]
+resource_name = "idle_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.33333334, 0.53333336, 0.73333335, 0.93333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_main"]
+_data = {
+&"RESET": SubResource("Animation_g2els"),
+&"idle_down": SubResource("Animation_qhqgy")
+}
+
+[node name="Player" type="CharacterBody2D" unique_id=712417603]
+collision_mask = 16
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=888229606]
+position = Vector2(0.6666667, -7.3333335)
+texture = ExtResource("1_texture")
+hframes = 6
+vframes = 10
+frame = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1625924042]
+z_index = 1
+position = Vector2(0, -4.6666665)
+shape = SubResource("CapsuleShape2D_487ah")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2068502639]
+libraries/ = SubResource("AnimationLibrary_main")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1632458187]
+zoom = Vector2(1.5, 1.5)

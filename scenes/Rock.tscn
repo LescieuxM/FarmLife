@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dgvwhg0qcfury"]
+
+[ext_resource type="Texture2D" uid="uid://chx66u0lv5pgl" path="res://art/tilemap/Stones.png" id="1_rock"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rock"]
+radius = 11.401754
+
+[node name="Rock" type="StaticBody2D" unique_id=1023065883]
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1891639769]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_rock")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1099620365]
+position = Vector2(-1, 0)
+shape = SubResource("CircleShape2D_rock")
