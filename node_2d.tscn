@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://mgeto844hxsl" path="res://scenes/player.tscn" id="3_epypp"]
 [ext_resource type="Texture2D" uid="uid://c0e17yji1g2v7" path="res://art/tilemap/Maple Tree.png" id="3_q6r6c"]
 [ext_resource type="Texture2D" uid="uid://ceb5124whwru8" path="res://art/tilemap/Road copiar.png" id="4_kdubu"]
-[ext_resource type="Script" path="res://scenes/Map.gd" id="5_map"]
-[ext_resource type="PackedScene" path="res://scenes/Tree.tscn" id="6_tree"]
-[ext_resource type="PackedScene" path="res://scenes/Rock.tscn" id="7_rock"]
+[ext_resource type="Script" uid="uid://cxt3i70otpmkg" path="res://scenes/Map.gd" id="5_map"]
+[ext_resource type="PackedScene" uid="uid://q5i6s17k8y6n" path="res://scenes/Tree.tscn" id="6_tree"]
+[ext_resource type="PackedScene" uid="uid://dgvwhg0qcfury" path="res://scenes/Rock.tscn" id="7_rock"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
 texture = ExtResource("1_0e48y")
@@ -686,9 +686,6 @@ position = Vector2(-17, 857)
 script = ExtResource("5_map")
 tree_scene = ExtResource("6_tree")
 rock_scene = ExtResource("7_rock")
-tree_count = 30
-rock_count = 25
-min_distance = 32.0
 
 [node name="TileMap" type="TileMap" parent="." unique_id=2135370289]
 position = Vector2(13, -451)
@@ -706,11 +703,9 @@ layer_3/tile_data = PackedInt32Array(-393173, 589831, 1, -327637, 589831, 2, -26
 layer_4/name = "tree"
 layer_5/name = "stone"
 
-[node name="YSort" type="Node2D" parent="."]
-y_sort_enabled = true
-
-[node name="Player" parent="YSort" unique_id=712417603 instance=ExtResource("3_epypp")]
+[node name="Player" parent="." unique_id=712417603 instance=ExtResource("3_epypp")]
 position = Vector2(502, -493)
-rotation = -0.007822514
-scale = Vector2(1, 1)
 speed = 100.0
+
+[node name="YSort" type="Node2D" parent="." unique_id=1529118211]
+y_sort_enabled = true
