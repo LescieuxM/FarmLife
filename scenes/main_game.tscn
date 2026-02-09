@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bqqv3jw03bp47" path="res://assets/sprites/Cute_Fantasy/Trees/Big_Spruce_tree.png" id="7_wi4c7"]
 [ext_resource type="Texture2D" uid="uid://hpt53hsvyauy" path="res://assets/sprites/Cute_Fantasy/Outdoor decoration/Outdoor_Decor_Animations/Rock_Animations/Rock_6_Anim.png" id="8_70vka"]
 [ext_resource type="Script" uid="uid://c5d8ui0mxq12" path="res://scripts/systems/random_tile_generator.gd" id="9_script"]
+[ext_resource type="Script" uid="uid://fhlr1cev2wli" path="res://scripts/systems/day_night_modulate.gd" id="10_daynight"]
+[ext_resource type="Script" uid="uid://cfrutk2ctnl6g" path="res://scripts/ui/hud.gd" id="11_hud"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l5ukw"]
 texture = ExtResource("2_wi4c7")
@@ -627,3 +629,24 @@ tile_set = SubResource("TileSet_2l77h")
 
 [node name="TileMapLayerStone" type="TileMapLayer" parent="." unique_id=1572229225]
 tile_set = SubResource("TileSet_nqdth")
+
+[node name="DayNightModulate" type="CanvasModulate" parent="." unique_id=582604784]
+script = ExtResource("10_daynight")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=712178130]
+layer = 10
+script = ExtResource("11_hud")
+
+[node name="TimeLabel" type="Label" parent="HUD" unique_id=1544550171]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+text = "06:00"
+horizontal_alignment = 2

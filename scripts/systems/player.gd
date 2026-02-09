@@ -14,6 +14,7 @@ var _dash_cooldown_timer := 0.0
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var camera: Camera2D = $Camera2D
+@onready var torch_light: PointLight2D = $TorchLight
 
 func _enter_tree() -> void:
 	if name.is_valid_int():
@@ -52,6 +53,13 @@ func _physics_process(delta: float) -> void:
 	velocity = direction * speed
 	move_and_slide()
 	_play_anim(_last_direction, direction != Vector2.ZERO)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if multiplayer.has_multiplayer_peer() and !is_multiplayer_authority():
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_L:
+		torch_light.enabled = !torch_light.enabled
 
 
 func _get_input_direction() -> Vector2:

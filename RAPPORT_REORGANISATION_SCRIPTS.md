@@ -55,7 +55,7 @@ scripts/
 │   ├── player.gd.uid
 │   └── scene_transition.gd
 └── ui/
-    └── main_menu.gd
+	└── main_menu.gd
 ```
 
 La réorganisation est terminée. Vous pouvez ouvrir le projet dans Godot 4 et lancer une scène pour confirmer que tout fonctionne.
