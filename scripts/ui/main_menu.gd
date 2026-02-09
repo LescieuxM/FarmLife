@@ -33,11 +33,11 @@ func _is_click_on_sprite(sprite: Sprite2D, click_pos: Vector2) -> bool:
 	var tex = sprite.texture
 	if tex == null:
 		return false
-	var frame_width = tex.get_width() / sprite.hframes
-	var frame_height = tex.get_height()
-	var size = Vector2(frame_width, frame_height) * sprite.scale
-	var origin = sprite.global_position - size / 2.0
-	return Rect2(origin, size).has_point(click_pos)
+	var frame_width := tex.get_width() / float(sprite.hframes)
+	var frame_height := tex.get_height()
+	var frame_size := Vector2(frame_width, frame_height) * sprite.scale
+	var origin := sprite.global_position - frame_size / 2.0
+	return Rect2(origin, frame_size).has_point(click_pos)
 
 func _open_book() -> void:
 	for frame_idx in range(1, 4):
