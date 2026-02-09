@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 SceneTransition="*res://scripts/systems/scene_transition.gd"
+HighLevelNetworkHandler="*uid://0yfkdgo1b81j"
+SteamManager="*res://scripts/steam_manager.gd"
 
 [display]
 
@@ -39,3 +41,10 @@ window/stretch/mode="viewport"
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 2d/snap/snap_2d_transforms_to_pixel=true
+
+[steam]
+
+initialization/app_id=0
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=false
+multiplayer_peer/max_channels=4

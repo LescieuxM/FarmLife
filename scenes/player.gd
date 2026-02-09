@@ -15,13 +15,21 @@ var _dash_cooldown_timer := 0.0
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var camera: Camera2D = $Camera2D
 
+func _enter_tree() -> void:
+	if name.is_valid_int():
+		set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
 	if camera:
-		camera.make_current()
+		if is_multiplayer_authority():
+			camera.make_current()
+		else:
+			camera.enabled = false
 
 
 func _physics_process(delta: float) -> void:
+	if multiplayer.has_multiplayer_peer() and !is_multiplayer_authority(): return
+
 	_dash_cooldown_timer = maxf(0.0, _dash_cooldown_timer - delta)
 
 	if Input.is_action_just_pressed("ui_accept") and not _is_dashing and _dash_cooldown_timer <= 0.0:
