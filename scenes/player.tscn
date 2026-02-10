@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dypirpf1e5b4j" path="res://scripts/systems/player.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://biva5r6qgclde" path="res://assets/sprites/Player_Main_All1.png" id="2_g2els"]
-[ext_resource type="Texture2D" path="res://assets/sprites/pixelart/overlayMouse.png" id="3_overlay"]
-[ext_resource type="Script" path="res://scripts/systems/tile_hover_overlay.gd" id="4_overlay_script"]
+[ext_resource type="Texture2D" uid="uid://cxs6mlhdhu7av" path="res://assets/sprites/pixelart/overlayMouse.png" id="3_overlay"]
+[ext_resource type="Script" uid="uid://mcld1gqo8um3" path="res://scripts/systems/tile_hover_overlay.gd" id="4_overlay_script"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_487ah"]
 radius = 4.0000005
@@ -22,6 +22,102 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_3v2ag"]
+resource_name = "axe_down"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [288, 289, 290, 291, 292, 293]
+}
+
+[sub_resource type="Animation" id="Animation_jej6c"]
+resource_name = "axe_side"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [297, 298, 299, 300, 301, 302]
+}
+
+[sub_resource type="Animation" id="Animation_f1ej7"]
+resource_name = "axe_top"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [306, 307, 308, 309, 310, 311]
+}
+
+[sub_resource type="Animation" id="Animation_oprun"]
+resource_name = "hoe_down"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [342, 343, 344, 345, 346, 347]
+}
+
+[sub_resource type="Animation" id="Animation_a8ls1"]
+resource_name = "hoe_side"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [351, 352, 353, 354, 355, 356]
+}
+
+[sub_resource type="Animation" id="Animation_qfm1y"]
+resource_name = "hoe_top"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [360, 361, 362, 363, 364, 365]
 }
 
 [sub_resource type="Animation" id="Anim_idle_down"]
@@ -86,6 +182,38 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [315, 316, 317, 318, 319, 320]
+}
+
+[sub_resource type="Animation" id="Animation_fulsm"]
+resource_name = "mine_side"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [324, 325, 326, 327, 328, 329]
+}
+
+[sub_resource type="Animation" id="Animation_4r5pv"]
+resource_name = "mine_top"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [333, 334, 335, 336, 337, 338]
 }
 
 [sub_resource type="Animation" id="Animation_qhqgy"]
@@ -201,20 +329,45 @@ tracks/0/keys = {
 "values": [30, 31, 32, 33, 34, 35]
 }
 
+[sub_resource type="Animation" id="Animation_60mlk"]
+resource_name = "watering_down"
+length = 0.56666666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [369, 370, 371, 372, 373, 374]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_main"]
 _data = {
 &"RESET": SubResource("Anim_RESET"),
+&"axe_down": SubResource("Animation_3v2ag"),
+&"axe_side": SubResource("Animation_jej6c"),
+&"axe_top": SubResource("Animation_f1ej7"),
+&"hoe_down": SubResource("Animation_oprun"),
+&"hoe_side": SubResource("Animation_a8ls1"),
+&"hoe_top": SubResource("Animation_qfm1y"),
 &"idle_down": SubResource("Anim_idle_down"),
 &"idle_side": SubResource("Animation_g2els"),
 &"idle_top": SubResource("Animation_smehm"),
 &"mine_down": SubResource("Animation_d2wvv"),
+&"mine_side": SubResource("Animation_fulsm"),
+&"mine_top": SubResource("Animation_4r5pv"),
 &"roll_down": SubResource("Animation_qhqgy"),
 &"roll_side": SubResource("Animation_ur7pv"),
 &"roll_top": SubResource("Animation_y4r1p"),
 &"walk_down": SubResource("Animation_dqkch"),
 &"walk_side": SubResource("Animation_qlg0r"),
 &"walk_top": SubResource("Animation_fjrip"),
-&"walk_up": SubResource("Animation_tuyoq")
+&"walk_up": SubResource("Animation_tuyoq"),
+&"watering_down": SubResource("Animation_60mlk")
 }
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g2els"]
@@ -265,6 +418,7 @@ shape = SubResource("CapsuleShape2D_487ah")
 libraries/ = SubResource("AnimationLibrary_main")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1632458187]
+position_smoothing_speed = 0.01
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1384070348]
 replication_config = SubResource("SceneReplicationConfig_g2els")
@@ -276,7 +430,7 @@ color = Color(1, 0.95, 0.8, 1)
 energy = 1.8
 texture = SubResource("GradientTexture2D_torch")
 
-[node name="TileHoverOverlay" type="Sprite2D" parent="."]
+[node name="TileHoverOverlay" type="Sprite2D" parent="." unique_id=722452955]
 texture_filter = 1
 texture = ExtResource("3_overlay")
 region_enabled = true
