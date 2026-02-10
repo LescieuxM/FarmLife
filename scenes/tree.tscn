@@ -56,11 +56,19 @@ _data = {
 &"last_hited": SubResource("Animation_qd6xs")
 }
 
-[node name="Tree" type="Node2D" unique_id=1685070944]
+[sub_resource type="CircleShape2D" id="CircleShape2D_avsvi"]
+radius = 15.0
+
+[node name="Tree" type="RigidBody2D" unique_id=397364352]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2102032499]
+position = Vector2(0, -23.8)
 texture = ExtResource("1_avsvi")
 hframes = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1927506145]
 libraries/ = SubResource("AnimationLibrary_ake3r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1180971487]
+position = Vector2(0, -15)
+shape = SubResource("CircleShape2D_avsvi")

@@ -5,11 +5,13 @@ extends CharacterBody2D
 @export var dash_speed: float = 230.0
 @export var dash_duration: float = 0.8
 @export var dash_cooldown: float = 2.0
+@export var hit_max_reach: float = 48.0
 
 var _last_direction := Vector2.DOWN
 var _is_dashing := false
 var _dash_timer := 0.0
 var _dash_cooldown_timer := 0.0
+var _is_hitting := false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
@@ -30,6 +32,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.has_multiplayer_peer() and !is_multiplayer_authority(): return
+	if _is_hitting:
+		move_and_slide()
+		return
 
 	_dash_cooldown_timer = maxf(0.0, _dash_cooldown_timer - delta)
 
@@ -61,6 +66,81 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_L:
 		torch_light.enabled = !torch_light.enabled
 
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _is_hitting or _is_dashing:
+			return
+		_try_hit()
+
+
+# ── Hitting hittable objects ────────────────────────────────────────────
+
+func _try_hit() -> void:
+	var generator := _get_generator()
+	if generator == null:
+		return
+
+	var mouse_global := get_global_mouse_position()
+	var cell := generator.world_to_cell(mouse_global)
+
+	if not generator.is_hittable_cell(cell):
+		return
+
+	var cell_center := generator.cell_to_world(cell)
+	var dist := global_position.distance_to(cell_center)
+	if dist > hit_max_reach:
+		return
+
+	var tool_name := generator.get_hittable_tool(cell)  # "axe", "mine", …
+	var dir_to_target := (cell_center - global_position).normalized()
+
+	_is_hitting = true
+	velocity = Vector2.ZERO
+
+	# Pick direction suffix and set cardinal _last_direction
+	var dir_suffix: String
+	if absf(dir_to_target.y) > absf(dir_to_target.x):
+		if dir_to_target.y > 0:
+			dir_suffix = "down"
+			_last_direction = Vector2.DOWN
+		else:
+			dir_suffix = "top"
+			_last_direction = Vector2.UP
+	else:
+		dir_suffix = "side"
+		_last_direction = Vector2.RIGHT if dir_to_target.x >= 0 else Vector2.LEFT
+
+	# Play tool animation (e.g. "axe_down", "mine_side")
+	var tool_anim := tool_name + "_" + dir_suffix
+	anim_player.play(tool_anim)
+	if sprite and dir_suffix == "side":
+		sprite.flip_h = dir_to_target.x < 0
+
+	# Hit mid-swing (~0.3s into the ~0.56s animation)
+	get_tree().create_timer(0.3).timeout.connect(
+		func(): generator.hit_cell(cell))
+
+	await anim_player.animation_finished
+	_is_hitting = false
+	_play_anim(_last_direction, false)
+
+
+# ── Generator access ───────────────────────────────────────────────────
+
+func _get_generator() -> RandomTileGenerator:
+	var parent := get_parent()
+	if parent is RandomTileGenerator:
+		return parent as RandomTileGenerator
+	if parent != null:
+		for child in parent.get_children():
+			if child is RandomTileGenerator:
+				return child as RandomTileGenerator
+		var root := get_tree().current_scene
+		if root is RandomTileGenerator:
+			return root as RandomTileGenerator
+	return null
+
+
+# ── Movement helpers ───────────────────────────────────────────────────
 
 func _get_input_direction() -> Vector2:
 	var d := Vector2.ZERO

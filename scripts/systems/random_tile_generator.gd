@@ -1,55 +1,79 @@
 class_name RandomTileGenerator
 extends Node2D
 ##
-## Génère aléatoirement des arbres (pattern multi-tuiles fixe) et des pierres.
-## Forme de l'arbre : tuiles atlas (5,0) à (6,4) + (7,3) et (4,3).
+## Generates random trees and stones. Manages all hittable objects with a
+## unified tracking system. Each hittable has a type, HP, tool, dimensions,
+## and layer. Extensible for new object types and item drops.
 ##
+
+## Emitted when any hittable object is fully destroyed.
+## Connect to this to spawn item drops, particles, etc.
+signal object_destroyed(type: String, root: Vector2i, world_pos: Vector2)
 
 @onready var bounds_layer: TileMapLayer = $TileMapLayer
 @onready var layer_tree: TileMapLayer = $TileMapLayerTree
 @onready var layer_stone: TileMapLayer = $TileMapLayerStone
 
-# --- Pattern d'arbre (forme fixe dans l'atlas) ---
-## Offsets relatifs à la racine (0,0) et coordonnées atlas correspondantes.
-## Forme : rectangle (5,0)-(6,4) + (4,3) et (7,3). Racine = (5,0) en atlas.
+# ── Tree atlas layout (3 cols × 5 rows per frame) ──────────────────────
 const TREE_PATTERN: Array = [
-	{"offset": Vector2i(0, 0), "atlas_coords": Vector2i(5, 0)},
-	{"offset": Vector2i(1, 0), "atlas_coords": Vector2i(6, 0)},
-	{"offset": Vector2i(0, 1), "atlas_coords": Vector2i(5, 1)},
-	{"offset": Vector2i(1, 1), "atlas_coords": Vector2i(6, 1)},
-	{"offset": Vector2i(0, 2), "atlas_coords": Vector2i(5, 2)},
-	{"offset": Vector2i(1, 2), "atlas_coords": Vector2i(6, 2)},
-	{"offset": Vector2i(0, 3), "atlas_coords": Vector2i(5, 3)},
-	{"offset": Vector2i(1, 3), "atlas_coords": Vector2i(6, 3)},
-	{"offset": Vector2i(-1, 3), "atlas_coords": Vector2i(4, 3)},
-	{"offset": Vector2i(2, 3), "atlas_coords": Vector2i(7, 3)},
-	{"offset": Vector2i(0, 4), "atlas_coords": Vector2i(5, 4)},
-	{"offset": Vector2i(1, 4), "atlas_coords": Vector2i(6, 4)},
+	{"offset": Vector2i(0, 0), "atlas_coords": Vector2i(4, 0)},
+	{"offset": Vector2i(1, 0), "atlas_coords": Vector2i(5, 0)},
+	{"offset": Vector2i(2, 0), "atlas_coords": Vector2i(6, 0)},
+	{"offset": Vector2i(0, 1), "atlas_coords": Vector2i(4, 1)},
+	{"offset": Vector2i(1, 1), "atlas_coords": Vector2i(5, 1)},
+	{"offset": Vector2i(2, 1), "atlas_coords": Vector2i(6, 1)},
+	{"offset": Vector2i(0, 2), "atlas_coords": Vector2i(4, 2)},
+	{"offset": Vector2i(1, 2), "atlas_coords": Vector2i(5, 2)},
+	{"offset": Vector2i(2, 2), "atlas_coords": Vector2i(6, 2)},
+	{"offset": Vector2i(0, 3), "atlas_coords": Vector2i(4, 3)},
+	{"offset": Vector2i(1, 3), "atlas_coords": Vector2i(5, 3)},
+	{"offset": Vector2i(2, 3), "atlas_coords": Vector2i(6, 3)},
+	{"offset": Vector2i(0, 4), "atlas_coords": Vector2i(4, 4)},
+	{"offset": Vector2i(1, 4), "atlas_coords": Vector2i(5, 4)},
+	{"offset": Vector2i(2, 4), "atlas_coords": Vector2i(6, 4)},
 ]
 
-# --- Arbres ---
+const TREE_FRAME_STUMP: int = 0
+const TREE_FRAME_NORMAL: int = 4
+const TREE_FRAME_HIT1: int = 8
+const TREE_FRAME_HIT2: int = 12
+const TREE_FRAME_HIT3: int = 16
+const TREE_FRAME_PREBREAK1: int = 20
+const TREE_FRAME_PREBREAK2: int = 23   # 4 cols wide, shifted -1
+const TREE_PREBREAK2_WIDTH: int = 4
+
+const TREE_WIDTH: int = 3
+const TREE_HEIGHT: int = 5
+const TRUNK_OFFSETS: Array = [Vector2i(1, 3)]
+
+const ANIM_STEP_DURATION: float = 0.12
+
+# ── Exports ─────────────────────────────────────────────────────────────
 @export_range(0.0, 1.0, 0.01) var density_tree: float = 0.12
 @export var tree_placement_max_attempts: int = 2000
-
-# --- Pierres (tuiles simples) ---
 @export_range(0.0, 1.0, 0.01) var density_stone: float = 0.03
-
-# --- Bornes de la map (cellules de tuiles) ---
-## Si true, utilise map_bounds_min/max. Sinon, utilise le calque de référence (bounds_layer).
 @export var use_custom_map_bounds: bool = true
-## Coin min (inclusif) : cellule la plus en haut à gauche.
 @export var map_bounds_min: Vector2i = Vector2i(-15, 1)
-## Coin max (inclusif) : cellule la plus en bas à droite.
 @export var map_bounds_max: Vector2i = Vector2i(58, 33)
-
-# --- Global ---
 @export var random_seed_value: int = 0
 @export var generate_on_ready: bool = true
 
+# ── Unified hittable tracking ───────────────────────────────────────────
+## Maps each hittable cell -> root cell of its object.
+var _hittable_cells: Dictionary = {}
+## Maps root cell -> info dict:
+##   { type:String, hp:int, width:int, height:int,
+##     layer:TileMapLayer, tool:String, hittable_offsets:Array }
+var _hittable_info: Dictionary = {}
+
+var _tree_source_id: int = -1
+
+
+# ── Lifecycle ───────────────────────────────────────────────────────────
 
 func _ready() -> void:
 	if bounds_layer == null:
-		push_warning("RandomTileGenerator: bounds_layer (TileMapLayer) introuvable.")
+		push_warning("RandomTileGenerator: bounds_layer introuvable.")
 		return
 	if layer_tree == null and layer_stone == null:
 		push_warning("RandomTileGenerator: TileMapLayerTree et TileMapLayerStone introuvables.")
@@ -58,18 +82,19 @@ func _ready() -> void:
 		call_deferred("generate")
 
 
-## Point d'entrée pour régénérer la map (bouton ou appel script).
 func generate() -> void:
 	if bounds_layer == null:
 		return
 	if random_seed_value != 0:
 		seed(random_seed_value)
 
+	_hittable_cells.clear()
+	_hittable_info.clear()
+
 	var rect: Rect2i
 	if use_custom_map_bounds:
-		# Rectangle inclusif : de map_bounds_min à map_bounds_max (les deux coins inclus)
-		var w: int = map_bounds_max.x - map_bounds_min.x + 1
-		var h: int = map_bounds_max.y - map_bounds_min.y + 1
+		var w := map_bounds_max.x - map_bounds_min.x + 1
+		var h := map_bounds_max.y - map_bounds_min.y + 1
 		rect = Rect2i(map_bounds_min.x, map_bounds_min.y, w, h)
 	else:
 		rect = bounds_layer.get_used_rect()
@@ -79,18 +104,18 @@ func generate() -> void:
 	var cells: Array[Vector2i] = _rect_to_cells(rect)
 	cells.shuffle()
 
-	# 1) Placer les arbres en patterns multi-tuiles (sans chevauchement)
-	var occupied_by_trees: Dictionary = {}
-	if layer_tree != null and layer_tree.tile_set != null:
-		_fill_trees_as_patterns(cells, occupied_by_trees)
+	var occupied: Dictionary = {}
 
-	# 2) Pierres en tuiles simples (on évite les cellules déjà occupées par les arbres)
+	if layer_tree != null and layer_tree.tile_set != null:
+		_find_tree_source_id()
+		_fill_trees(cells, occupied)
+
 	var cells_for_stone: Array[Vector2i] = []
 	for c in cells:
-		if not occupied_by_trees.has(c):
+		if not occupied.has(c):
 			cells_for_stone.append(c)
 	if layer_stone != null and layer_stone.tile_set != null:
-		_fill_layer_single_tiles(layer_stone, cells_for_stone, density_stone)
+		_fill_stones(cells_for_stone)
 
 	if layer_tree != null:
 		layer_tree.update_internals()
@@ -98,19 +123,222 @@ func generate() -> void:
 		layer_stone.update_internals()
 
 
-# --- Arbres : pattern fixe (forme atlas 5,0 → 6,4 + 4,3 et 7,3) ---
+# ── Public API ──────────────────────────────────────────────────────────
 
-func _fill_trees_as_patterns(cells: Array[Vector2i], occupied: Dictionary) -> void:
-	layer_tree.clear()
+func is_hittable_cell(cell: Vector2i) -> bool:
+	return _hittable_cells.has(cell)
+
+
+## Returns the tool name for the hittable at cell ("axe", "mine", …).
+func get_hittable_tool(cell: Vector2i) -> String:
+	if not _hittable_cells.has(cell):
+		return ""
+	var root: Vector2i = _hittable_cells[cell]
+	return _hittable_info[root].tool
+
+
+## Hit the object at cell. Returns true if the hit was registered.
+func hit_cell(cell: Vector2i) -> bool:
+	if not _hittable_cells.has(cell):
+		return false
+	var root: Vector2i = _hittable_cells[cell]
+	if not _hittable_info.has(root):
+		return false
+
+	var info: Dictionary = _hittable_info[root]
+	info.hp -= 1
+
+	if info.hp > 0:
+		_on_hit(root, info)
+	else:
+		_on_destroy(root, info)
+	return true
+
+
+func world_to_cell(world_pos: Vector2) -> Vector2i:
+	return bounds_layer.local_to_map(bounds_layer.to_local(world_pos))
+
+
+func cell_to_world(cell: Vector2i) -> Vector2:
+	return bounds_layer.to_global(bounds_layer.map_to_local(cell))
+
+
+# ── Hit / Destroy dispatch ──────────────────────────────────────────────
+
+func _on_hit(root: Vector2i, info: Dictionary) -> void:
+	match info.type:
+		"tree":
+			_play_tree_hit_anim(root)
+		_:
+			_shake_object(root)
+
+
+func _on_destroy(root: Vector2i, info: Dictionary) -> void:
+	match info.type:
+		"tree":
+			_play_tree_last_hit_anim(root)
+		_:
+			_destroy_object(root)
+
+
+# ── Registration helpers ────────────────────────────────────────────────
+
+func _register_hittable(root: Vector2i, type: String, hp: int, width: int,
+		height: int, layer: TileMapLayer, tool: String,
+		hittable_offsets: Array) -> void:
+	_hittable_info[root] = {
+		"type": type, "hp": hp, "width": width, "height": height,
+		"layer": layer, "tool": tool, "hittable_offsets": hittable_offsets,
+	}
+	for offset in hittable_offsets:
+		_hittable_cells[root + offset] = root
+
+
+func _unregister_hittable(root: Vector2i) -> void:
+	if not _hittable_info.has(root):
+		return
+	var info: Dictionary = _hittable_info[root]
+	for offset in info.hittable_offsets:
+		_hittable_cells.erase(root + offset)
+	_hittable_info.erase(root)
+
+
+# ── Generic destroy ─────────────────────────────────────────────────────
+
+func _destroy_object(root: Vector2i) -> void:
+	var info: Dictionary = _hittable_info[root]
+	var layer: TileMapLayer = info.layer
+	for row in info.height:
+		for col in info.width:
+			layer.erase_cell(root + Vector2i(col, row))
+	layer.update_internals()
+
+	var world_pos := cell_to_world(root)
+	object_destroyed.emit(info.type, root, world_pos)
+	_unregister_hittable(root)
+
+
+# ── Generic shake (works for any single-layer object) ───────────────────
+
+func _shake_object(root: Vector2i) -> void:
+	var info: Dictionary = _hittable_info[root]
+	var layer: TileMapLayer = info.layer
+	var tile_set := layer.tile_set
+	var tile_size := Vector2(tile_set.tile_size)
+
+	var container := Node2D.new()
+	layer.add_child(container)
+
+	var saved_tiles: Array = []
+
+	for row in info.height:
+		for col in info.width:
+			var cell := root + Vector2i(col, row)
+			var src_id := layer.get_cell_source_id(cell)
+			if src_id == -1:
+				continue
+			var atlas_coords := layer.get_cell_atlas_coords(cell)
+			saved_tiles.append({
+				"cell": cell, "source_id": src_id, "atlas_coords": atlas_coords
+			})
+
+			var source := tile_set.get_source(src_id) as TileSetAtlasSource
+			var spr := Sprite2D.new()
+			spr.texture = source.texture
+			spr.region_enabled = true
+			spr.region_rect = Rect2(Vector2(atlas_coords) * tile_size, tile_size)
+			spr.position = layer.map_to_local(cell)
+			spr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			container.add_child(spr)
+
+			layer.erase_cell(cell)
+
+	var tween := create_tween()
+	tween.tween_property(container, "position", Vector2(1, 0), 0.04)
+	tween.tween_property(container, "position", Vector2(-1, 0), 0.04)
+	tween.tween_property(container, "position", Vector2(1, 0), 0.04)
+	tween.tween_property(container, "position", Vector2.ZERO, 0.04)
+	tween.tween_callback(_restore_after_shake.bind(layer, saved_tiles, container))
+
+
+func _restore_after_shake(layer: TileMapLayer, saved_tiles: Array,
+		container: Node2D) -> void:
+	for t in saved_tiles:
+		layer.set_cell(t.cell, t.source_id, t.atlas_coords, 0)
+	container.queue_free()
+
+
+# ── Tree-specific animations ───────────────────────────────────────────
+
+func _play_tree_hit_anim(root: Vector2i) -> void:
+	var tween := create_tween()
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_HIT1))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_HIT2))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_HIT3))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_NORMAL))
+
+
+func _play_tree_last_hit_anim(root: Vector2i) -> void:
+	var tween := create_tween()
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_HIT1))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_HIT2))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_HIT3))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_swap_tree_frame.bind(root, TREE_FRAME_PREBREAK1))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(
+		_swap_tree_frame.bind(root, TREE_FRAME_PREBREAK2, TREE_PREBREAK2_WIDTH, -1))
+	tween.tween_interval(ANIM_STEP_DURATION)
+	tween.tween_callback(_finalize_tree_destroy.bind(root))
+
+
+func _swap_tree_frame(root: Vector2i, col_offset: int,
+		width: int = TREE_WIDTH, x_shift: int = 0) -> void:
+	for row in TREE_HEIGHT:
+		for col in width:
+			var cell := root + Vector2i(col + x_shift, row)
+			var atlas_coords := Vector2i(col_offset + col, row)
+			layer_tree.set_cell(cell, _tree_source_id, atlas_coords, 0)
+
+
+func _finalize_tree_destroy(root: Vector2i) -> void:
+	# Erase extra column on the left from PREBREAK2 (shifted -1)
+	for row in TREE_HEIGHT:
+		layer_tree.erase_cell(root + Vector2i(-1, row))
+	# Place stump tiles
+	_swap_tree_frame(root, TREE_FRAME_STUMP)
+	layer_tree.update_internals()
+
+	var world_pos := cell_to_world(root + Vector2i(1, 2))
+	object_destroyed.emit("tree", root, world_pos)
+	_unregister_hittable(root)
+
+	# Register stump as a new hittable
+	_register_hittable(root, "stump", 3, TREE_WIDTH, TREE_HEIGHT,
+		layer_tree, "axe", TRUNK_OFFSETS)
+
+
+# ── Placement: trees ───────────────────────────────────────────────────
+
+func _find_tree_source_id() -> void:
 	var tile_set: TileSet = layer_tree.tile_set
-	var source_id: int = -1
 	for i in range(tile_set.get_source_count()):
 		var sid: int = tile_set.get_source_id(i)
 		var src: TileSetSource = tile_set.get_source(sid)
 		if src is TileSetAtlasSource:
-			source_id = sid
+			_tree_source_id = sid
 			break
-	if source_id < 0:
+
+
+func _fill_trees(cells: Array[Vector2i], occupied: Dictionary) -> void:
+	layer_tree.clear()
+
+	if _tree_source_id < 0:
 		push_warning("RandomTileGenerator: aucun TileSetAtlasSource pour les arbres.")
 		return
 
@@ -122,49 +350,47 @@ func _fill_trees_as_patterns(cells: Array[Vector2i], occupied: Dictionary) -> vo
 		attempts += 1
 		var root: Vector2i = cells[randi() % cells.size()]
 
-		# Toutes les cellules du pattern doivent être libres
-		var can_place: bool = true
+		var can_place := true
 		for entry in TREE_PATTERN:
-			var cell: Vector2i = root + entry.offset
-			if occupied.has(cell):
+			if occupied.has(root + entry.offset):
 				can_place = false
 				break
-
 		if not can_place:
 			continue
 
-		# Placer la forme complète de l'arbre (12 tuiles)
 		for entry in TREE_PATTERN:
 			var cell: Vector2i = root + entry.offset
-			layer_tree.set_cell(cell, source_id, entry.atlas_coords, 0)
+			layer_tree.set_cell(cell, _tree_source_id, entry.atlas_coords, 0)
 			occupied[cell] = true
 			placed_cells += 1
+
+		_register_hittable(root, "tree", 5, TREE_WIDTH, TREE_HEIGHT,
+			layer_tree, "axe", TRUNK_OFFSETS)
+
 		if placed_cells >= target_fill:
 			break
 
 
-# --- Pierres : tuiles simples (comportement inchangé) ---
+# ── Placement: stones ──────────────────────────────────────────────────
 
-func _fill_layer_single_tiles(
-	layer: TileMapLayer,
-	cells: Array[Vector2i],
-	density: float
-) -> void:
-	var tile_set: TileSet = layer.tile_set
+func _fill_stones(cells: Array[Vector2i]) -> void:
+	layer_stone.clear()
+	var tile_set: TileSet = layer_stone.tile_set
 	var tiles: Array[Dictionary] = _collect_valid_tiles(tile_set)
 	if tiles.is_empty():
-		push_warning("RandomTileGenerator: aucun tuile valide dans le TileSet de %s" % layer.name)
+		push_warning("RandomTileGenerator: aucun tuile valide pour les pierres.")
 		return
 
-	layer.clear()
-	var count := int(cells.size() * clamp(density, 0.0, 1.0))
+	var count := int(cells.size() * clamp(density_stone, 0.0, 1.0))
 	for i in min(count, cells.size()):
 		var coords: Vector2i = cells[i]
 		var t: Dictionary = tiles[randi() % tiles.size()]
-		layer.set_cell(coords, t.source_id, t.atlas_coords, 0)
+		layer_stone.set_cell(coords, t.source_id, t.atlas_coords, 0)
+		_register_hittable(coords, "stone", 3, 1, 1,
+			layer_stone, "mine", [Vector2i(0, 0)])
 
 
-# --- Utilitaires ---
+# ── Utilities ──────────────────────────────────────────────────────────
 
 func _rect_to_cells(rect: Rect2i) -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
