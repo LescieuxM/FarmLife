@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dapd3w80wy6er"]
+
+[ext_resource type="Texture2D" uid="uid://bqqv3jw03bp47" path="res://assets/sprites/Cute_Fantasy/Trees/Big_Spruce_tree.png" id="1_avsvi"]
+
+[sub_resource type="Animation" id="Animation_vplca"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_viusy"]
+resource_name = "hited"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 1]
+}
+
+[sub_resource type="Animation" id="Animation_qd6xs"]
+resource_name = "last_hited"
+length = 0.73333335
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5, 6, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ake3r"]
+_data = {
+&"RESET": SubResource("Animation_vplca"),
+&"hited": SubResource("Animation_viusy"),
+&"last_hited": SubResource("Animation_qd6xs")
+}
+
+[node name="Tree" type="Node2D" unique_id=1685070944]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2102032499]
+texture = ExtResource("1_avsvi")
+hframes = 7
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1927506145]
+libraries/ = SubResource("AnimationLibrary_ake3r")
