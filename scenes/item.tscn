@@ -1,3 +1,22 @@
-[gd_scene format=3 uid="uid://b4j6fjhxaad4v"]
+[gd_scene format=3 uid="uid://b4j6fjhxaad4v" load_steps=4]
 
-[node name="Item" type="Node2D" unique_id=64915398]
+[ext_resource type="Script" path="res://scripts/world_item.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://blu22rvripame" path="res://assets/sprites/ui/item/wood.png" id="2_placeholder"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 20.0
+
+[node name="WorldItem" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_placeholder")
+
+[node name="PickupArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+shape = SubResource("CircleShape2D_pickup")

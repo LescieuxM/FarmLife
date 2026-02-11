@@ -21,6 +21,7 @@ SceneTransition="*res://scripts/systems/scene_transition.gd"
 HighLevelNetworkHandler="*uid://0yfkdgo1b81j"
 SteamManager="*res://scripts/steam_manager.gd"
 GameClock="*res://scripts/systems/game_clock.gd"
+InventoryManager="*res://scripts/systems/inventory_manager.gd"
 
 [display]
 

@@ -78,6 +78,9 @@ func _ready() -> void:
 	if layer_tree == null and layer_stone == null:
 		push_warning("RandomTileGenerator: TileMapLayerTree et TileMapLayerStone introuvables.")
 		return
+	# Connect drops: when an object is destroyed, spawn loot via InventoryManager
+	object_destroyed.connect(func(type: String, _root, world_pos: Vector2):
+		InventoryManager.spawn_drops(type, world_pos))
 	if generate_on_ready:
 		call_deferred("generate")
 
