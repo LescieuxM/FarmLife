@@ -17,6 +17,7 @@ var _is_hitting := false
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var camera: Camera2D = $Camera2D
 @onready var torch_light: PointLight2D = $TorchLight
+@onready var tile_overlay: Sprite2D = $TileHoverOverlay
 
 func _enter_tree() -> void:
 	if name.is_valid_int():
@@ -28,6 +29,7 @@ func _ready() -> void:
 			camera.make_current()
 		else:
 			camera.enabled = false
+	call_deferred("_connect_hotbar")
 
 
 func _physics_process(delta: float) -> void:
@@ -91,6 +93,11 @@ func _try_hit() -> void:
 		return
 
 	var tool_name := generator.get_hittable_tool(cell)  # "axe", "mine", …
+
+	# Check hotbar has the correct tool selected
+	var hotbar := _get_hotbar()
+	if hotbar and hotbar.get_selected_tool() != tool_name:
+		return
 	var dir_to_target := (cell_center - global_position).normalized()
 
 	_is_hitting = true
@@ -122,6 +129,26 @@ func _try_hit() -> void:
 	await anim_player.animation_finished
 	_is_hitting = false
 	_play_anim(_last_direction, false)
+
+
+# ── UI access ─────────────────────────────────────────────────────────
+
+func _connect_hotbar() -> void:
+	var hotbar := _get_hotbar()
+	if hotbar and hotbar.has_signal("tool_changed"):
+		hotbar.tool_changed.connect(_on_tool_changed)
+
+
+func _on_tool_changed(tool_name: String) -> void:
+	if tile_overlay and tile_overlay.has_method("set_overlay_enabled"):
+		tile_overlay.set_overlay_enabled(tool_name == "axe" or tool_name == "mine")
+
+
+func _get_hotbar() -> Control:
+	var hud := get_tree().current_scene.get_node_or_null("HUD")
+	if hud:
+		return hud.get_node_or_null("Hotbar")
+	return null
 
 
 # ── Generator access ───────────────────────────────────────────────────
