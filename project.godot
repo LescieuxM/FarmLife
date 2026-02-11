@@ -21,6 +21,7 @@ SceneTransition="*res://scripts/systems/scene_transition.gd"
 HighLevelNetworkHandler="*uid://0yfkdgo1b81j"
 SteamManager="*res://scripts/steam_manager.gd"
 GameClock="*res://scripts/systems/game_clock.gd"
+InventoryManager="*res://scripts/systems/inventory_manager.gd"
 
 [display]
 
@@ -28,6 +29,10 @@ window/size/viewport_width=480
 window/size/viewport_height=270
 window/size/mode=3
 window/stretch/mode="viewport"
+
+[gui]
+
+common/snap/snap_2d_vertices_to_pixel=false
 
 [layer_names]
 
@@ -41,7 +46,8 @@ window/stretch/mode="viewport"
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
-2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
+2d/snap_controls_to_pixels=true
 
 [steam]
 

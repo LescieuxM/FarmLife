@@ -1,0 +1,315 @@
+[gd_scene format=3 uid="uid://nbrfv3tou8m0"]
+
+[ext_resource type="Texture2D" uid="uid://c5sdpj2lqadun" path="res://assets/sprites/ui/fantasy/UI/HotkeyBox_34x34_Pressed.png" id="1_1ewps"]
+[ext_resource type="Script" uid="uid://bbkwqkbbwn827" path="res://scripts/ui/hotbar.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c5aapirl8fiot" path="res://assets/sprites/ui/fantasy/UI/HotkeyBox_34x34.png" id="1_yj1xu"]
+[ext_resource type="Texture2D" uid="uid://cdsiojhn6rlwr" path="res://assets/sprites/ui/itemHotBar/sword.png" id="2_uhbbb"]
+[ext_resource type="Texture2D" uid="uid://buhms6p8k2dvu" path="res://assets/sprites/ui/itemHotBar/pickaxe.png" id="3_1ewps"]
+[ext_resource type="Texture2D" uid="uid://dsmyv82nqva62" path="res://assets/sprites/ui/itemHotBar/axe.png" id="4_wceku"]
+[ext_resource type="Texture2D" uid="uid://cu2eronbv3xhg" path="res://assets/sprites/ui/itemHotBar/wateringcan.png" id="5_iapdy"]
+[ext_resource type="Texture2D" uid="uid://dj5g6vhg4aeck" path="res://assets/sprites/ui/itemHotBar/torch.png" id="6_i62wn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1ewps"]
+texture = ExtResource("1_yj1xu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wceku"]
+texture = ExtResource("1_1ewps")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xrqkv"]
+texture = ExtResource("1_yj1xu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2n1yv"]
+texture = ExtResource("1_yj1xu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vu8xs"]
+texture = ExtResource("1_yj1xu")
+
+[node name="Hotbar" type="Control" unique_id=1894892258]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=139293277]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -40.0
+offset_right = 226.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.8, 0.8)
+
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=1928262509]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button" unique_id=1588549178]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_uhbbb")
+stretch_mode = 4
+
+[node name="Button2" type="Button" parent="HBoxContainer" unique_id=1423482725]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button2" unique_id=399571774]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("3_1ewps")
+stretch_mode = 4
+
+[node name="Button3" type="Button" parent="HBoxContainer" unique_id=1778283592]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button3" unique_id=1638743430]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("4_wceku")
+stretch_mode = 4
+
+[node name="Button4" type="Button" parent="HBoxContainer" unique_id=1849991596]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button4" unique_id=1841849485]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("5_iapdy")
+stretch_mode = 4
+
+[node name="Button5" type="Button" parent="HBoxContainer" unique_id=1982490087]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button5" unique_id=1893831805]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_i62wn")
+stretch_mode = 4
+
+[node name="Button6" type="Button" parent="HBoxContainer" unique_id=2002502477]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button6" unique_id=906291992]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+stretch_mode = 4
+
+[node name="Button7" type="Button" parent="HBoxContainer" unique_id=1290761047]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button7" unique_id=1786359942]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+stretch_mode = 4
+
+[node name="Button8" type="Button" parent="HBoxContainer" unique_id=1178512851]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button8" unique_id=1557592291]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+stretch_mode = 4
+
+[node name="Button9" type="Button" parent="HBoxContainer" unique_id=1051439449]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button9" unique_id=2075326402]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+stretch_mode = 4
+
+[node name="Button10" type="Button" parent="HBoxContainer" unique_id=797755688]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_1ewps")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wceku")
+theme_override_styles/hover = SubResource("StyleBoxTexture_xrqkv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2n1yv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_vu8xs")
+toggle_mode = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Button10" unique_id=1733109068]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17600001
+anchor_top = 0.17600001
+anchor_right = 0.809
+anchor_bottom = 0.809
+offset_left = 0.015999317
+offset_top = 0.015999317
+offset_right = -3.5893364
+offset_bottom = -3.589344
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+stretch_mode = 4
