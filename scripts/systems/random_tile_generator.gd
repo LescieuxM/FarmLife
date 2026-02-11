@@ -15,8 +15,6 @@ signal object_destroyed(type: String, root: Vector2i, world_pos: Vector2)
 @onready var layer_stone: TileMapLayer = $TileMapLayerStone
 ## Champignons : doit être un enfant nommé TileMapLayerVegetations (TileMapLayer avec un TileSet).
 var layer_vegetations: TileMapLayer
-## Eau animée : doit être un enfant nommé TileMapLayerWaterAnim (tuiles atlas (0,0) à (23,2)).
-var layer_water_anim: TileMapLayer
 
 # ── Tree atlas layout (3 cols × 5 rows per frame) ──────────────────────
 const TREE_PATTERN: Array = [
@@ -58,8 +56,6 @@ const ANIM_STEP_DURATION: float = 0.12
 @export_range(0.0, 1.0, 0.01) var density_stone: float = 0.03
 ## Vitesse d'animation des champignons (images par seconde). Pas de placement aléatoire : seules les tuiles déjà sur le calque sont animées.
 @export var vegetations_anim_fps: float = 6.0
-## Vitesse d'animation de l'eau TileMapLayerWaterAnim (72 tuiles, atlas (0,0) à (23,2)).
-@export var water_anim_fps: float = 10.0
 @export var use_custom_map_bounds: bool = true
 @export var map_bounds_min: Vector2i = Vector2i(-15, 1)
 @export var map_bounds_max: Vector2i = Vector2i(58, 33)
@@ -78,9 +74,6 @@ var _tree_source_id: int = -1
 ## Champignons animés : { cell, frames } pour _process.
 var _vegetation_anim_cells: Array = []
 var _vegetation_anim_time: float = 0.0
-## Eau animée (72 frames atlas (0,0)-(23,2)) : { cell, frames }.
-var _water_anim_cells: Array = []
-var _water_anim_time: float = 0.0
 
 
 # ── Lifecycle ───────────────────────────────────────────────────────────
@@ -107,16 +100,6 @@ func _process(delta: float) -> void:
 			var v_data: Dictionary = v_frames[v_index]
 			for entry in _vegetation_anim_cells:
 				layer_vegetations.set_cell(entry.cell, v_data.source_id, v_data.atlas_coords, 0)
-	# Animation eau TileMapLayerWaterAnim (72 tuiles (0,0) à (23,2))
-	if not _water_anim_cells.is_empty() and layer_water_anim != null:
-		_water_anim_time += delta
-		var w_frames: Array = _water_anim_cells[0].frames
-		if not w_frames.is_empty():
-			var w_count: int = w_frames.size()
-			var w_index: int = int(_water_anim_time * water_anim_fps) % w_count
-			var w_data: Dictionary = w_frames[w_index]
-			for entry in _water_anim_cells:
-				layer_water_anim.set_cell(entry.cell, w_data.source_id, w_data.atlas_coords, 0)
 
 
 func generate() -> void:
@@ -129,8 +112,6 @@ func generate() -> void:
 	_hittable_info.clear()
 	if layer_vegetations == null:
 		layer_vegetations = get_node_or_null("TileMapLayerVegetations") as TileMapLayer
-	if layer_water_anim == null:
-		layer_water_anim = get_node_or_null("TileMapLayerWaterAnim") as TileMapLayer
 
 	var rect: Rect2i
 	if use_custom_map_bounds:
@@ -159,8 +140,6 @@ func generate() -> void:
 		_fill_stones(cells_free)
 	if layer_vegetations != null and layer_vegetations.tile_set != null:
 		_build_vegetation_anim_from_layer()
-	if layer_water_anim != null and layer_water_anim.tile_set != null:
-		_build_water_anim_from_layer()
 
 	if layer_tree != null:
 		layer_tree.update_internals()
@@ -168,8 +147,6 @@ func generate() -> void:
 		layer_stone.update_internals()
 	if layer_vegetations != null:
 		layer_vegetations.update_internals()
-	if layer_water_anim != null:
-		layer_water_anim.update_internals()
 
 
 # ── Public API ──────────────────────────────────────────────────────────
@@ -449,17 +426,6 @@ func _build_vegetation_anim_from_layer() -> void:
 		return
 	for coords in layer_vegetations.get_used_cells():
 		_vegetation_anim_cells.append({"cell": coords, "frames": frames})
-
-
-## Enregistre les cellules de TileMapLayerWaterAnim pour l'animation (72 tuiles atlas (0,0) à (23,2) dans l'ordre).
-func _build_water_anim_from_layer() -> void:
-	_water_anim_cells.clear()
-	var tile_set: TileSet = layer_water_anim.tile_set
-	var frames: Array[Dictionary] = _collect_vegetation_frames_ordered(tile_set, 72)
-	if frames.is_empty():
-		return
-	for coords in layer_water_anim.get_used_cells():
-		_water_anim_cells.append({"cell": coords, "frames": frames})
 
 
 # ── Utilities ──────────────────────────────────────────────────────────
