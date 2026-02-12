@@ -24,7 +24,7 @@ func _ready() -> void:
 	visible = false
 	_grid = $TextureRect/GridContainer
 	_btn_close = $TextureRect/btn_close
-	_craft_panel = $TextureRect2
+	_craft_panel = $Craft
 
 	_gather_cases()
 	_build_craft_ui()

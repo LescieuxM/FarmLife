@@ -73,7 +73,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		# Check if holding a placeable item → place instead of hit
 		var hotbar := _get_hotbar()
-		var tool_name := hotbar.get_selected_tool() if hotbar else ""
+		var tool_name: String = hotbar.get_selected_tool() if hotbar else ""
 		if InventoryManager.is_placeable(tool_name):
 			_try_place(tool_name)
 			return
