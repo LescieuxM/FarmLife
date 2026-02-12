@@ -32,6 +32,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+mouse_behavior_recursive = 1
 script = ExtResource("1_script")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=139293277]
@@ -76,6 +77,22 @@ scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_uhbbb")
 stretch_mode = 4
 
+[node name="one" type="TextureRect" parent="HBoxContainer/Button" unique_id=1814957472]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button" unique_id=1121785490]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
+
 [node name="Button2" type="Button" parent="HBoxContainer" unique_id=1423482725]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
@@ -102,6 +119,22 @@ grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("3_1ewps")
 stretch_mode = 4
+
+[node name="one" type="TextureRect" parent="HBoxContainer/Button2" unique_id=2032584790]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button2" unique_id=1266416975]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
 
 [node name="Button3" type="Button" parent="HBoxContainer" unique_id=1778283592]
 custom_minimum_size = Vector2(34, 34)
@@ -130,6 +163,22 @@ scale = Vector2(1.2, 1.2)
 texture = ExtResource("4_wceku")
 stretch_mode = 4
 
+[node name="one" type="TextureRect" parent="HBoxContainer/Button3" unique_id=460861116]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button3" unique_id=1151427132]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
+
 [node name="Button4" type="Button" parent="HBoxContainer" unique_id=1849991596]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
@@ -156,6 +205,22 @@ grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("5_iapdy")
 stretch_mode = 4
+
+[node name="one" type="TextureRect" parent="HBoxContainer/Button4" unique_id=664004300]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button4" unique_id=509746905]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
 
 [node name="Button5" type="Button" parent="HBoxContainer" unique_id=1982490087]
 custom_minimum_size = Vector2(34, 34)
@@ -184,6 +249,22 @@ scale = Vector2(1.2, 1.2)
 texture = ExtResource("6_i62wn")
 stretch_mode = 4
 
+[node name="one" type="TextureRect" parent="HBoxContainer/Button5" unique_id=747318595]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button5" unique_id=219676278]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
+
 [node name="Button6" type="Button" parent="HBoxContainer" unique_id=2002502477]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
@@ -209,6 +290,22 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 stretch_mode = 4
+
+[node name="one" type="TextureRect" parent="HBoxContainer/Button6" unique_id=2073886070]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button6" unique_id=1572029315]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
 
 [node name="Button7" type="Button" parent="HBoxContainer" unique_id=1290761047]
 custom_minimum_size = Vector2(34, 34)
@@ -236,6 +333,22 @@ grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 stretch_mode = 4
 
+[node name="one" type="TextureRect" parent="HBoxContainer/Button7" unique_id=306603543]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button7" unique_id=1838434520]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
+
 [node name="Button8" type="Button" parent="HBoxContainer" unique_id=1178512851]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
@@ -261,6 +374,22 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 stretch_mode = 4
+
+[node name="one" type="TextureRect" parent="HBoxContainer/Button8" unique_id=2011032431]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button8" unique_id=1641359672]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
 
 [node name="Button9" type="Button" parent="HBoxContainer" unique_id=1051439449]
 custom_minimum_size = Vector2(34, 34)
@@ -288,6 +417,22 @@ grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 stretch_mode = 4
 
+[node name="one" type="TextureRect" parent="HBoxContainer/Button9" unique_id=675114606]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button9" unique_id=1528233162]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2
+
 [node name="Button10" type="Button" parent="HBoxContainer" unique_id=797755688]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
@@ -313,3 +458,19 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.2, 1.2)
 stretch_mode = 4
+
+[node name="one" type="TextureRect" parent="HBoxContainer/Button10" unique_id=185424010]
+layout_mode = 0
+offset_left = 20.999998
+offset_top = 18.750004
+offset_right = 31.197645
+offset_bottom = 27.962234
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="HBoxContainer/Button10" unique_id=1978448289]
+layout_mode = 0
+offset_left = 17.499998
+offset_top = 18.750004
+offset_right = 26.499998
+offset_bottom = 27.750004
+stretch_mode = 2

@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bkr455t6xufpd" path="res://assets/sprites/ui/fantasy/UI/inventoryLabel.png" id="5_l63hg"]
 [ext_resource type="Texture2D" uid="uid://blu22rvripame" path="res://assets/sprites/ui/item/wood.png" id="7_6neyr"]
 [ext_resource type="Texture2D" uid="uid://bnrexdo6qgihy" path="res://assets/sprites/ui/number/1.png" id="8_kjkgr"]
+[ext_resource type="Texture2D" uid="uid://cqiij8gj1j1bm" path="res://assets/sprites/ui/fantasy/UI/craftLabel.png" id="11_40tea"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dm17h"]
 texture = ExtResource("2_hbk4f")
@@ -136,18 +137,18 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case" unique_id=21813506]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 texture = ExtResource("8_kjkgr")
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case" unique_id=1705722258]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -174,18 +175,18 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case2" unique_id=193630593]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 texture = ExtResource("8_kjkgr")
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case2" unique_id=1559003886]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 8.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 17.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -211,17 +212,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case3" unique_id=1216149027]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case3" unique_id=1925284983]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -247,17 +248,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case4" unique_id=944166592]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case4" unique_id=430491760]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -283,17 +284,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case5" unique_id=1596035963]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case5" unique_id=1001595620]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -319,17 +320,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case6" unique_id=843366211]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case6" unique_id=1536924802]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -355,17 +356,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case7" unique_id=1529007281]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case7" unique_id=268549062]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -391,17 +392,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case8" unique_id=445291727]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case8" unique_id=1577368660]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -427,17 +428,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case9" unique_id=2097415168]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case9" unique_id=93267002]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -463,17 +464,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case10" unique_id=1750587999]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case10" unique_id=1479944008]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -499,17 +500,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case11" unique_id=745138488]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case11" unique_id=1658341518]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -535,17 +536,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case12" unique_id=206184685]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case12" unique_id=48715467]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -571,17 +572,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case13" unique_id=1165590011]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case13" unique_id=2146572180]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -607,59 +608,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case14" unique_id=892882842]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case14" unique_id=1521112340]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
-offset_bottom = 23.21223
-stretch_mode = 2
-
-[node name="case19" type="TextureRect" parent="TextureRect/GridContainer/case14/ten" unique_id=1648584609]
-layout_mode = 0
-offset_left = -12.197647
-offset_top = 13.7877655
-offset_right = 11.802353
-offset_bottom = 37.787766
-texture = ExtResource("4_dm17h")
-stretch_mode = 3
-
-[node name="item" type="TextureRect" parent="TextureRect/GridContainer/case14/ten/case19" unique_id=398239282]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.098000005
-anchor_top = 0.049000002
-anchor_right = 0.882
-anchor_bottom = 0.83300006
-offset_left = 1.8456469
-offset_top = 3.0362296
-offset_right = 0.6767101
-offset_bottom = 1.8672867
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("7_6neyr")
-stretch_mode = 2
-
-[node name="one" type="TextureRect" parent="TextureRect/GridContainer/case14/ten/case19" unique_id=280601559]
-layout_mode = 0
-offset_left = 15.197647
-offset_top = 14.212231
-offset_right = 25.395294
-offset_bottom = 23.424461
-texture = ExtResource("8_kjkgr")
-stretch_mode = 2
-
-[node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case14/ten/case19" unique_id=1924149423]
-layout_mode = 0
-offset_left = 12.197647
-offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -685,17 +644,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case15" unique_id=395209255]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case15" unique_id=1535837675]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -721,17 +680,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case16" unique_id=926550147]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case16" unique_id=450310100]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 11.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 20.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -757,17 +716,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case17" unique_id=347696346]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case17" unique_id=235699539]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -793,17 +752,53 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case18" unique_id=1251463998]
 layout_mode = 0
+offset_left = 16.197647
+offset_top = 14.212231
+offset_right = 26.395294
+offset_bottom = 23.424461
+stretch_mode = 2
+
+[node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case18" unique_id=1001083007]
+layout_mode = 0
+offset_left = 10.197647
+offset_top = 14.212231
+offset_right = 19.197647
+offset_bottom = 23.21223
+stretch_mode = 2
+
+[node name="case19" type="TextureRect" parent="TextureRect/GridContainer" unique_id=1648584609]
+layout_mode = 2
+texture = ExtResource("4_dm17h")
+stretch_mode = 3
+
+[node name="item" type="TextureRect" parent="TextureRect/GridContainer/case19" unique_id=398239282]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.098000005
+anchor_top = 0.049000002
+anchor_right = 0.882
+anchor_bottom = 0.83300006
+offset_left = 1.8456469
+offset_top = 3.0362296
+offset_right = 0.6767101
+offset_bottom = 1.8672867
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 2
+
+[node name="one" type="TextureRect" parent="TextureRect/GridContainer/case19" unique_id=280601559]
+layout_mode = 0
 offset_left = 15.197647
 offset_top = 14.212231
 offset_right = 25.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
-[node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case18" unique_id=1001083007]
+[node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case19" unique_id=1924149423]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -829,53 +824,17 @@ stretch_mode = 2
 
 [node name="one" type="TextureRect" parent="TextureRect/GridContainer/case20" unique_id=1557542176]
 layout_mode = 0
-offset_left = 15.197647
+offset_left = 16.197647
 offset_top = 14.212231
-offset_right = 25.395294
+offset_right = 26.395294
 offset_bottom = 23.424461
 stretch_mode = 2
 
 [node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case20" unique_id=1613925741]
 layout_mode = 0
-offset_left = 12.197647
+offset_left = 10.197647
 offset_top = 14.212231
-offset_right = 21.197647
-offset_bottom = 23.21223
-stretch_mode = 2
-
-[node name="case21" type="TextureRect" parent="TextureRect/GridContainer" unique_id=817712387]
-layout_mode = 2
-texture = ExtResource("4_dm17h")
-stretch_mode = 3
-
-[node name="item" type="TextureRect" parent="TextureRect/GridContainer/case21" unique_id=1886045915]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.098000005
-anchor_top = 0.049000002
-anchor_right = 0.882
-anchor_bottom = 0.83300006
-offset_left = 1.8456469
-offset_top = 3.0362296
-offset_right = 0.6767101
-offset_bottom = 1.8672867
-grow_horizontal = 2
-grow_vertical = 2
-stretch_mode = 2
-
-[node name="one" type="TextureRect" parent="TextureRect/GridContainer/case21" unique_id=1744173599]
-layout_mode = 0
-offset_left = 15.197647
-offset_top = 14.212231
-offset_right = 25.395294
-offset_bottom = 23.424461
-stretch_mode = 2
-
-[node name="ten" type="TextureRect" parent="TextureRect/GridContainer/case21" unique_id=1329853636]
-layout_mode = 0
-offset_left = 12.197647
-offset_top = 14.212231
-offset_right = 21.197647
+offset_right = 19.197647
 offset_bottom = 23.21223
 stretch_mode = 2
 
@@ -988,4 +947,4 @@ offset_right = 39.882355
 offset_bottom = 14.000004
 grow_horizontal = 2
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("5_l63hg")
+texture = ExtResource("11_40tea")

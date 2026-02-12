@@ -13,12 +13,14 @@ const BOB_AMPLITUDE: float = 1.5
 const BOB_SPEED: float = 3.0
 const ATTRACT_SPEED: float = 120.0
 const COLLECT_DISTANCE: float = 6.0
+const LOSE_INTEREST_DISTANCE: float = 50.0
 
 # ── State ───────────────────────────────────────────────────────────────
 var _base_y: float = 0.0
 var _bob_time: float = 0.0
 var _target: Node2D = null   # player to fly towards
 var _spawned: bool = false
+var dropped: bool = false     # true = dropped by player, immune until they leave the zone
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var pickup_area: Area2D = $PickupArea
@@ -33,9 +35,10 @@ func _ready() -> void:
 	# Randomise bob phase so items don't bob in sync
 	_bob_time = randf() * TAU
 
-	# Connect area signal
+	# Connect area signals
 	if pickup_area:
 		pickup_area.body_entered.connect(_on_body_entered)
+		pickup_area.body_exited.connect(_on_body_exited)
 
 	# Play spawn pop tween
 	_play_spawn_pop()
@@ -46,16 +49,24 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if _target != null and is_instance_valid(_target):
-		# Attract: fly towards the player
-		var dir := (_target.global_position - global_position).normalized()
-		global_position += dir * ATTRACT_SPEED * delta
+		var dist := global_position.distance_to(_target.global_position)
 
-		# Collect when close enough
-		if global_position.distance_to(_target.global_position) < COLLECT_DISTANCE:
-			InventoryManager.add_item(item_type)
-			queue_free()
-			return
-	else:
+		# Player moved too far → stop following, go back to bobbing
+		if dist > LOSE_INTEREST_DISTANCE:
+			_target = null
+			_base_y = position.y
+		else:
+			# Attract: fly towards the player
+			var dir := (_target.global_position - global_position).normalized()
+			global_position += dir * ATTRACT_SPEED * delta
+
+			# Collect when close enough
+			if dist < COLLECT_DISTANCE:
+				InventoryManager.add_item(item_type)
+				queue_free()
+				return
+
+	if _target == null or not is_instance_valid(_target):
 		# Idle bob
 		_bob_time += delta * BOB_SPEED
 		position.y = _base_y + sin(_bob_time) * BOB_AMPLITUDE
@@ -83,8 +94,15 @@ func _on_spawn_finished() -> void:
 	_spawned = true
 
 
-# ── Area2D callback ────────────────────────────────────────────────────
+# ── Area2D callbacks ───────────────────────────────────────────────────
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D:
+		if dropped:
+			return  # ignore — player hasn't left the zone yet
 		_target = body
+
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is CharacterBody2D and dropped:
+		dropped = false

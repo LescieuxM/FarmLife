@@ -141,9 +141,10 @@ func generate() -> void:
 			cells_free.append(c)
 	if layer_stone != null and layer_stone.tile_set != null:
 		_fill_stones(cells_free)
+	"""
 	if layer_vegetations != null and layer_vegetations.tile_set != null:
 		_build_vegetation_anim_from_layer()
-
+	"""
 	if layer_tree != null:
 		layer_tree.update_internals()
 	if layer_stone != null:
@@ -418,7 +419,7 @@ func _fill_stones(cells: Array[Vector2i]) -> void:
 		_register_hittable(coords, "stone", 3, 1, 1,
 			layer_stone, "mine", [Vector2i(0, 0)])
 
-
+"""
 ## Enregistre les cellules déjà présentes sur le calque pour l'animation (aucun placement).
 func _build_vegetation_anim_from_layer() -> void:
 	_vegetation_anim_cells.clear()
@@ -429,7 +430,7 @@ func _build_vegetation_anim_from_layer() -> void:
 		return
 	for coords in layer_vegetations.get_used_cells():
 		_vegetation_anim_cells.append({"cell": coords, "frames": frames})
-
+"""
 
 # ── Utilities ──────────────────────────────────────────────────────────
 
@@ -440,7 +441,7 @@ func _rect_to_cells(rect: Rect2i) -> Array[Vector2i]:
 			out.append(Vector2i(x, y))
 	return out
 
-
+"""
 ## Retourne les tuiles végétation (champignons) triées par ordre atlas (y puis x), au plus max_frames.
 func _collect_vegetation_frames_ordered(tile_set: TileSet, max_frames: int = 6) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -461,7 +462,7 @@ func _collect_vegetation_frames_ordered(tile_set: TileSet, max_frames: int = 6) 
 		if result.size() >= max_frames:
 			break
 	return result
-
+"""
 
 func _collect_valid_tiles(tile_set: TileSet) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []

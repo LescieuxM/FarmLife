@@ -5,14 +5,24 @@ extends Node
 ##
 
 signal inventory_changed
+signal hotbar_changed
 
 const SLOT_COUNT: int = 20
+const HOTBAR_SLOT_COUNT: int = 9
 const MAX_STACK: int = 99
+
+# Items that cannot be stacked (tools) — max 1 per slot.
+const NON_STACKABLE: Array[String] = ["sword", "mine", "axe", "watering", "torch"]
 
 # ── Item database ───────────────────────────────────────────────────────
 var ITEM_DB: Dictionary = {
 	"wood": "res://assets/sprites/ui/item/wood.png",
 	"stone": "res://assets/sprites/ui/item/stone.png",
+	"sword": "res://assets/sprites/ui/itemHotBar/sword.png",
+	"mine": "res://assets/sprites/ui/itemHotBar/pickaxe.png",
+	"axe": "res://assets/sprites/ui/itemHotBar/axe.png",
+	"watering": "res://assets/sprites/ui/itemHotBar/wateringcan.png",
+	"torch": "res://assets/sprites/ui/itemHotBar/torch.png",
 }
 
 # ── Drop tables ─────────────────────────────────────────────────────────
@@ -35,15 +45,29 @@ var _number_textures: Dictionary = {}
 ## Each slot is either {} (empty) or {"type": String, "count": int}.
 var slots: Array[Dictionary] = []
 
+# ── Hotbar slots ───────────────────────────────────────────────────────
+## Same format as inventory slots.
+var hotbar_slots: Array[Dictionary] = []
+
 # ── Preloaded item scene ────────────────────────────────────────────────
 var _item_scene: PackedScene = null
 
 
 func _ready() -> void:
-	# Initialise empty slots
+	# Initialise empty inventory slots
 	slots.clear()
 	for i in SLOT_COUNT:
 		slots.append({})
+
+	# Initialise hotbar slots with default tools
+	hotbar_slots = [
+		{"type": "sword", "count": 1},
+		{"type": "mine", "count": 1},
+		{"type": "axe", "count": 1},
+		{"type": "watering", "count": 1},
+		{"type": "torch", "count": 1},
+		{}, {}, {}, {},
+	]
 
 	# Pre-load number textures 0-9
 	for d in range(10):
@@ -65,13 +89,14 @@ func _ready() -> void:
 ## could not fit).
 func add_item(type: String, count: int = 1) -> int:
 	var remaining := count
+	var cap: int = get_max_stack(type)
 
 	# 1) Try to stack onto existing slots of the same type
 	for i in SLOT_COUNT:
 		if remaining <= 0:
 			break
 		if slots[i].has("type") and slots[i].type == type:
-			var space: int = MAX_STACK - int(slots[i].count)
+			var space: int = cap - int(slots[i].count)
 			if space > 0:
 				var to_add: int = mini(remaining, space)
 				slots[i].count += to_add
@@ -82,7 +107,7 @@ func add_item(type: String, count: int = 1) -> int:
 		if remaining <= 0:
 			break
 		if slots[i].is_empty():
-			var to_add := mini(remaining, MAX_STACK)
+			var to_add := mini(remaining, cap)
 			slots[i] = {"type": type, "count": to_add}
 			remaining -= to_add
 
@@ -139,20 +164,31 @@ func stack_slots(from: int, to: int) -> void:
 		swap_slots(from, to)
 		return
 
-	# Same type → merge
+	# Same type → merge (only if stackable)
 	if sf.has("type") and st.has("type") and sf.type == st.type:
-		var space: int = MAX_STACK - int(st.count)
-		if space > 0:
-			var to_move: int = mini(int(sf.count), space)
-			st.count += to_move
-			sf.count -= to_move
-			if sf.count <= 0:
-				slots[from] = {}
-		inventory_changed.emit()
-		return
+		if is_stackable(sf.type):
+			var space: int = get_max_stack(sf.type) - int(st.count)
+			if space > 0:
+				var to_move: int = mini(int(sf.count), space)
+				st.count += to_move
+				sf.count -= to_move
+				if sf.count <= 0:
+					slots[from] = {}
+			inventory_changed.emit()
+			return
 
-	# Different types → swap
+	# Different types (or same non-stackable) → swap
 	swap_slots(from, to)
+
+
+## Returns true if the item type can be stacked (count > 1).
+func is_stackable(type: String) -> bool:
+	return not NON_STACKABLE.has(type)
+
+
+## Returns the max stack size for a given item type.
+func get_max_stack(type: String) -> int:
+	return MAX_STACK if is_stackable(type) else 1
 
 
 ## Returns the Texture2D for a given item type, or null.
@@ -168,6 +204,116 @@ func get_number_texture(digit: int) -> Texture2D:
 	if _number_textures.has(d):
 		return _number_textures[d]
 	return null
+
+
+# ── Cross-container operations ─────────────────────────────────────────
+
+## Returns the slot array for the given container.
+func _get_container(is_hotbar: bool) -> Array[Dictionary]:
+	return hotbar_slots if is_hotbar else slots
+
+
+## Returns the slot count for the given container.
+func _get_container_size(is_hotbar: bool) -> int:
+	return HOTBAR_SLOT_COUNT if is_hotbar else SLOT_COUNT
+
+
+## Moves / stacks an item from one container-slot to another.
+## Works between inventory<->inventory, hotbar<->hotbar, and cross.
+func stack_between(from_hotbar: bool, from_idx: int, to_hotbar: bool, to_idx: int) -> void:
+	var src := _get_container(from_hotbar)
+	var dst := _get_container(to_hotbar)
+	if from_idx < 0 or from_idx >= _get_container_size(from_hotbar):
+		return
+	if to_idx < 0 or to_idx >= _get_container_size(to_hotbar):
+		return
+	if from_hotbar == to_hotbar and from_idx == to_idx:
+		return
+
+	var sf: Dictionary = src[from_idx]
+	var st: Dictionary = dst[to_idx]
+
+	if sf.is_empty():
+		return
+
+	# Target empty → move
+	if st.is_empty():
+		dst[to_idx] = sf.duplicate()
+		src[from_idx] = {}
+		_emit_changed(from_hotbar, to_hotbar)
+		return
+
+	# Same type → merge (only if stackable)
+	if sf.has("type") and st.has("type") and sf.type == st.type:
+		if is_stackable(sf.type):
+			var space: int = get_max_stack(sf.type) - int(st.count)
+			if space > 0:
+				var to_move: int = mini(int(sf.count), space)
+				st.count += to_move
+				sf.count -= to_move
+				if sf.count <= 0:
+					src[from_idx] = {}
+			_emit_changed(from_hotbar, to_hotbar)
+			return
+
+	# Different types (or same non-stackable) → swap
+	src[from_idx] = st.duplicate()
+	dst[to_idx] = sf.duplicate()
+	_emit_changed(from_hotbar, to_hotbar)
+
+
+## Clears a slot and returns its previous content.
+func clear_slot(is_hotbar: bool, idx: int) -> Dictionary:
+	var container := _get_container(is_hotbar)
+	if idx < 0 or idx >= _get_container_size(is_hotbar):
+		return {}
+	var data: Dictionary = container[idx].duplicate()
+	container[idx] = {}
+	if is_hotbar:
+		hotbar_changed.emit()
+	else:
+		inventory_changed.emit()
+	return data
+
+
+## Emits the right signal(s) after a cross-container operation.
+func _emit_changed(a_hotbar: bool, b_hotbar: bool) -> void:
+	if a_hotbar or b_hotbar:
+		hotbar_changed.emit()
+	if not a_hotbar or not b_hotbar:
+		inventory_changed.emit()
+
+
+## Spawns items at the player's feet.
+func drop_item(type: String, count: int) -> void:
+	if type.is_empty() or count <= 0:
+		return
+	if _item_scene == null:
+		push_warning("InventoryManager: item scene not loaded.")
+		return
+
+	# Find the player
+	var player: Node2D = null
+	for node in get_tree().get_nodes_in_group("player"):
+		player = node as Node2D
+		break
+	if player == null:
+		# Fallback: search for Player class in the whole tree
+		var all_nodes := get_tree().current_scene.find_children("*", "Player", true, false)
+		if all_nodes.size() > 0:
+			player = all_nodes[0] as Node2D
+	if player == null:
+		push_warning("InventoryManager: could not find player for drop.")
+		return
+
+	var root := get_tree().current_scene
+	for i in count:
+		var item: Node2D = _item_scene.instantiate()
+		item.item_type = type
+		item.dropped = true
+		item.position_offset = Vector2(randf_range(-12.0, 12.0), randf_range(-12.0, 12.0))
+		item.global_position = player.global_position
+		root.call_deferred("add_child", item)
 
 
 # ── World drops ─────────────────────────────────────────────────────────
