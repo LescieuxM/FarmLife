@@ -10,6 +10,8 @@ var _cases: Array[Control] = []       # 20 direct children of GridContainer
 var _grid: GridContainer = null
 var _btn_close: Button = null
 var _hotbar: Control = null           # sibling Hotbar node
+var _craft_panel: TextureRect = null  # TextureRect2 — craft panel
+var _craft_buttons: Array[Button] = []
 
 # ── Drag state ──────────────────────────────────────────────────────────
 var _dragging: bool = false
@@ -22,8 +24,10 @@ func _ready() -> void:
 	visible = false
 	_grid = $TextureRect/GridContainer
 	_btn_close = $TextureRect/btn_close
+	_craft_panel = $TextureRect2
 
 	_gather_cases()
+	_build_craft_ui()
 
 	if _btn_close:
 		_btn_close.pressed.connect(func(): _close())
@@ -48,6 +52,7 @@ func _gather_cases() -> void:
 
 ## Refreshes every slot's display from InventoryManager data.
 func refresh() -> void:
+	_refresh_craft_buttons()
 	for i in _cases.size():
 		var case_node: Control = _cases[i]
 		var item_rect: TextureRect = case_node.get_node_or_null("item")
@@ -82,6 +87,106 @@ func refresh() -> void:
 			else:
 				if one_rect: one_rect.texture = null
 				if ten_rect: ten_rect.texture = null
+
+
+# ── Craft UI ───────────────────────────────────────────────────────────
+
+## Builds the craft recipe list inside _craft_panel (TextureRect2).
+func _build_craft_ui() -> void:
+	if _craft_panel == null:
+		return
+
+	var vbox := VBoxContainer.new()
+	vbox.name = "CraftList"
+	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vbox.offset_left = 6.0
+	vbox.offset_top = 14.0
+	vbox.offset_right = -6.0
+	vbox.offset_bottom = -4.0
+	vbox.add_theme_constant_override("separation", 2)
+	_craft_panel.add_child(vbox)
+
+	_craft_buttons.clear()
+	for i in InventoryManager.CRAFT_RECIPES.size():
+		var recipe: Dictionary = InventoryManager.CRAFT_RECIPES[i]
+		var entry := VBoxContainer.new()
+		entry.add_theme_constant_override("separation", 1)
+		vbox.add_child(entry)
+
+		# Result line: icon + name
+		var result_row := HBoxContainer.new()
+		result_row.add_theme_constant_override("separation", 2)
+		entry.add_child(result_row)
+
+		var result_icon := TextureRect.new()
+		result_icon.texture = InventoryManager.get_item_texture(recipe.result)
+		result_icon.custom_minimum_size = Vector2(14, 14)
+		result_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		result_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		result_row.add_child(result_icon)
+
+		var result_label := Label.new()
+		result_label.text = recipe.result
+		result_label.add_theme_font_size_override("font_size", 7)
+		result_row.add_child(result_label)
+
+		# Ingredients line
+		var ingredients: Dictionary = recipe.ingredients
+		for type in ingredients:
+			var ing_row := HBoxContainer.new()
+			ing_row.add_theme_constant_override("separation", 1)
+			entry.add_child(ing_row)
+
+			var ing_icon := TextureRect.new()
+			ing_icon.texture = InventoryManager.get_item_texture(type)
+			ing_icon.custom_minimum_size = Vector2(10, 10)
+			ing_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			ing_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			ing_row.add_child(ing_icon)
+
+			var count: int = ingredients[type]
+			# Show digit textures for the count
+			if count >= 10:
+				var ten_tex := TextureRect.new()
+				ten_tex.texture = InventoryManager.get_number_texture(count / 10)
+				ten_tex.custom_minimum_size = Vector2(8, 8)
+				ten_tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				ten_tex.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+				ing_row.add_child(ten_tex)
+			var one_tex := TextureRect.new()
+			one_tex.texture = InventoryManager.get_number_texture(count % 10)
+			one_tex.custom_minimum_size = Vector2(8, 8)
+			one_tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			one_tex.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			ing_row.add_child(one_tex)
+
+		# Craft button
+		var btn := Button.new()
+		btn.text = "Craft"
+		btn.custom_minimum_size = Vector2(0, 14)
+		btn.add_theme_font_size_override("font_size", 7)
+		var idx := i
+		btn.pressed.connect(func(): _on_craft_pressed(idx))
+		entry.add_child(btn)
+		_craft_buttons.append(btn)
+
+
+## Called when a craft button is pressed.
+func _on_craft_pressed(recipe_idx: int) -> void:
+	InventoryManager.craft(recipe_idx)
+	refresh()
+
+
+## Updates craft button states based on whether recipes are craftable.
+func _refresh_craft_buttons() -> void:
+	for i in _craft_buttons.size():
+		var btn: Button = _craft_buttons[i]
+		var can: bool = InventoryManager.can_craft(i)
+		btn.disabled = not can
+		if can:
+			btn.modulate = Color(1, 1, 1, 1)
+		else:
+			btn.modulate = Color(1, 0.4, 0.4, 0.7)
 
 
 # ── Open / Close ───────────────────────────────────────────────────────

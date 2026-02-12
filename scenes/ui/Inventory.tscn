@@ -850,7 +850,7 @@ offset_bottom = 15.0
 grow_horizontal = 2
 texture = ExtResource("5_l63hg")
 
-[node name="TextureRect2" type="TextureRect" parent="." unique_id=346875295]
+[node name="Craft" type="TextureRect" parent="." unique_id=346875295]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -867,7 +867,7 @@ scale = Vector2(1.3, 1.3)
 pivot_offset = Vector2(48, 48)
 texture = ExtResource("1_aa520")
 
-[node name="Button" type="Button" parent="TextureRect2" unique_id=796799237]
+[node name="Button" type="Button" parent="Craft" unique_id=796799237]
 visible = false
 layout_mode = 1
 anchors_preset = 1
@@ -885,7 +885,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_aqlb3")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_dm17h")
 theme_override_styles/focus = SubResource("StyleBoxTexture_dm17h")
 
-[node name="TextureRect3" type="TextureRect" parent="TextureRect2" unique_id=1941293443]
+[node name="TextureRect3" type="TextureRect" parent="Craft" unique_id=1941293443]
 layout_mode = 1
 offset_left = -4.9411726
 offset_top = -4.9411726
@@ -894,7 +894,7 @@ offset_bottom = 35.058826
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_l63hg")
 
-[node name="TextureRect6" type="TextureRect" parent="TextureRect2" unique_id=1298834953]
+[node name="TextureRect6" type="TextureRect" parent="Craft" unique_id=1298834953]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -907,7 +907,7 @@ grow_horizontal = 0
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_l63hg")
 
-[node name="TextureRect4" type="TextureRect" parent="TextureRect2" unique_id=16173053]
+[node name="TextureRect4" type="TextureRect" parent="Craft" unique_id=16173053]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -920,7 +920,7 @@ grow_vertical = 0
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_l63hg")
 
-[node name="TextureRect5" type="TextureRect" parent="TextureRect2" unique_id=173727578]
+[node name="TextureRect5" type="TextureRect" parent="Craft" unique_id=173727578]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -936,7 +936,7 @@ grow_vertical = 0
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_l63hg")
 
-[node name="TextureRect" type="TextureRect" parent="TextureRect2" unique_id=511145228]
+[node name="TextureRect" type="TextureRect" parent="Craft" unique_id=511145228]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5

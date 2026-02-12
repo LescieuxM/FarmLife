@@ -12,7 +12,10 @@ const HOTBAR_SLOT_COUNT: int = 9
 const MAX_STACK: int = 99
 
 # Items that cannot be stacked (tools) — max 1 per slot.
-const NON_STACKABLE: Array[String] = ["sword", "mine", "axe", "watering", "torch"]
+const NON_STACKABLE: Array[String] = ["sword", "mine", "axe", "watering", "torch", "table"]
+
+# Items that can be placed in the world.
+const PLACEABLE: Array[String] = ["table"]
 
 # ── Item database ───────────────────────────────────────────────────────
 var ITEM_DB: Dictionary = {
@@ -23,6 +26,7 @@ var ITEM_DB: Dictionary = {
 	"axe": "res://assets/sprites/ui/itemHotBar/axe.png",
 	"watering": "res://assets/sprites/ui/itemHotBar/wateringcan.png",
 	"torch": "res://assets/sprites/ui/itemHotBar/torch.png",
+	"table": "res://assets/sprites/placable/table.png",
 }
 
 # ── Drop tables ─────────────────────────────────────────────────────────
@@ -30,12 +34,14 @@ var DROP_TABLE: Dictionary = {
 	"tree": "wood",
 	"stump": "wood",
 	"stone": "stone",
+	"table": "table",
 }
 
 var DROP_COUNT: Dictionary = {
 	"tree": 3,
 	"stump": 1,
 	"stone": 2,
+	"table": 1,
 }
 
 # ── Number sprites (digits 0-9) ────────────────────────────────────────
@@ -181,6 +187,11 @@ func stack_slots(from: int, to: int) -> void:
 	swap_slots(from, to)
 
 
+## Returns true if the item type can be placed in the world.
+func is_placeable(type: String) -> bool:
+	return PLACEABLE.has(type)
+
+
 ## Returns true if the item type can be stacked (count > 1).
 func is_stackable(type: String) -> bool:
 	return not NON_STACKABLE.has(type)
@@ -314,6 +325,52 @@ func drop_item(type: String, count: int) -> void:
 		item.position_offset = Vector2(randf_range(-12.0, 12.0), randf_range(-12.0, 12.0))
 		item.global_position = player.global_position
 		root.call_deferred("add_child", item)
+
+
+# ── Craft recipes ────────────────────────────────────────────────────────
+
+var CRAFT_RECIPES: Array[Dictionary] = [
+	{"result": "table", "result_count": 1, "ingredients": {"wood": 5}},
+]
+
+
+## Returns true if the player has enough ingredients for recipe at idx.
+func can_craft(recipe_idx: int) -> bool:
+	if recipe_idx < 0 or recipe_idx >= CRAFT_RECIPES.size():
+		return false
+	var recipe: Dictionary = CRAFT_RECIPES[recipe_idx]
+	var ingredients: Dictionary = recipe.ingredients
+	for type in ingredients:
+		var needed: int = ingredients[type]
+		var have: int = 0
+		for i in SLOT_COUNT:
+			if slots[i].has("type") and slots[i].type == type:
+				have += int(slots[i].count)
+		if have < needed:
+			return false
+	return true
+
+
+## Consumes ingredients and adds the result. Returns true if successful.
+func craft(recipe_idx: int) -> bool:
+	if not can_craft(recipe_idx):
+		return false
+	var recipe: Dictionary = CRAFT_RECIPES[recipe_idx]
+	var ingredients: Dictionary = recipe.ingredients
+	for type in ingredients:
+		remove_item(type, ingredients[type])
+	add_item(recipe.result, recipe.result_count)
+	return true
+
+
+## Removes one item of the given type from the hotbar. Returns true if found.
+func remove_hotbar_item(type: String) -> bool:
+	for i in HOTBAR_SLOT_COUNT:
+		if hotbar_slots[i].has("type") and hotbar_slots[i].type == type:
+			hotbar_slots[i] = {}
+			hotbar_changed.emit()
+			return true
+	return false
 
 
 # ── World drops ─────────────────────────────────────────────────────────

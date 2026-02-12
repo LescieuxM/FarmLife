@@ -71,6 +71,8 @@ var _hittable_cells: Dictionary = {}
 var _hittable_info: Dictionary = {}
 
 var _tree_source_id: int = -1
+## Player-placed sprites: root cell → Sprite2D node.
+var _placed_sprites: Dictionary = {}
 ## Champignons animés : { cell, frames } pour _process.
 var _vegetation_anim_cells: Array = []
 var _vegetation_anim_time: float = 0.0
@@ -155,6 +157,11 @@ func generate() -> void:
 
 # ── Public API ──────────────────────────────────────────────────────────
 
+## Returns true if the cell is free (no hittable and no placed object).
+func is_cell_free(cell: Vector2i) -> bool:
+	return not _hittable_cells.has(cell) and not _placed_sprites.has(cell)
+
+
 func is_hittable_cell(cell: Vector2i) -> bool:
 	return _hittable_cells.has(cell)
 
@@ -193,6 +200,23 @@ func cell_to_world(cell: Vector2i) -> Vector2:
 	return bounds_layer.to_global(bounds_layer.map_to_local(cell))
 
 
+## Places a player-built object at the given cell. Returns true on success.
+func place_object(cell: Vector2i, type: String) -> bool:
+	if not is_cell_free(cell):
+		return false
+	var tex: Texture2D = InventoryManager.get_item_texture(type)
+	if tex == null:
+		return false
+	var spr := Sprite2D.new()
+	spr.texture = tex
+	spr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	spr.global_position = cell_to_world(cell)
+	add_child(spr)
+	_placed_sprites[cell] = spr
+	_register_hittable(cell, type, 2, 1, 1, null, "axe", [Vector2i(0, 0)])
+	return true
+
+
 # ── Hit / Destroy dispatch ──────────────────────────────────────────────
 
 func _on_hit(root: Vector2i, info: Dictionary) -> void:
@@ -200,7 +224,10 @@ func _on_hit(root: Vector2i, info: Dictionary) -> void:
 		"tree":
 			_play_tree_hit_anim(root)
 		_:
-			_shake_object(root)
+			if info.layer == null:
+				_shake_placed_sprite(root)
+			else:
+				_shake_object(root)
 
 
 func _on_destroy(root: Vector2i, info: Dictionary) -> void:
@@ -237,11 +264,18 @@ func _unregister_hittable(root: Vector2i) -> void:
 
 func _destroy_object(root: Vector2i) -> void:
 	var info: Dictionary = _hittable_info[root]
-	var layer: TileMapLayer = info.layer
-	for row in info.height:
-		for col in info.width:
-			layer.erase_cell(root + Vector2i(col, row))
-	layer.update_internals()
+	var layer = info.layer  # TileMapLayer or null for placed sprites
+
+	if layer == null:
+		# Placed sprite object
+		if _placed_sprites.has(root):
+			_placed_sprites[root].queue_free()
+			_placed_sprites.erase(root)
+	else:
+		for row in info.height:
+			for col in info.width:
+				layer.erase_cell(root + Vector2i(col, row))
+		layer.update_internals()
 
 	var world_pos := cell_to_world(root)
 	object_destroyed.emit(info.type, root, world_pos)
@@ -296,6 +330,19 @@ func _restore_after_shake(layer: TileMapLayer, saved_tiles: Array,
 	for t in saved_tiles:
 		layer.set_cell(t.cell, t.source_id, t.atlas_coords, 0)
 	container.queue_free()
+
+
+## Shake animation for placed Sprite2D objects (no TileMapLayer).
+func _shake_placed_sprite(root: Vector2i) -> void:
+	if not _placed_sprites.has(root):
+		return
+	var spr: Sprite2D = _placed_sprites[root]
+	var origin := spr.position
+	var tween := create_tween()
+	tween.tween_property(spr, "position", origin + Vector2(1, 0), 0.04)
+	tween.tween_property(spr, "position", origin + Vector2(-1, 0), 0.04)
+	tween.tween_property(spr, "position", origin + Vector2(1, 0), 0.04)
+	tween.tween_property(spr, "position", origin, 0.04)
 
 
 # ── Tree-specific animations ───────────────────────────────────────────

@@ -71,6 +71,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if _is_hitting or _is_dashing:
 			return
+		# Check if holding a placeable item → place instead of hit
+		var hotbar := _get_hotbar()
+		var tool_name := hotbar.get_selected_tool() if hotbar else ""
+		if InventoryManager.is_placeable(tool_name):
+			_try_place(tool_name)
+			return
 		_try_hit()
 
 
@@ -131,6 +137,27 @@ func _try_hit() -> void:
 	_play_anim(_last_direction, false)
 
 
+# ── Placement ──────────────────────────────────────────────────────────
+
+func _try_place(type: String) -> void:
+	var generator := _get_generator()
+	if generator == null:
+		return
+
+	var mouse_global := get_global_mouse_position()
+	var cell := generator.world_to_cell(mouse_global)
+	var cell_center := generator.cell_to_world(cell)
+
+	if global_position.distance_to(cell_center) > hit_max_reach:
+		return
+
+	if not generator.is_cell_free(cell):
+		return
+
+	if generator.place_object(cell, type):
+		InventoryManager.remove_hotbar_item(type)
+
+
 # ── UI access ─────────────────────────────────────────────────────────
 
 func _connect_hotbar() -> void:
@@ -141,7 +168,8 @@ func _connect_hotbar() -> void:
 
 func _on_tool_changed(tool_name: String) -> void:
 	if tile_overlay and tile_overlay.has_method("set_overlay_enabled"):
-		tile_overlay.set_overlay_enabled(tool_name == "axe" or tool_name == "mine")
+		tile_overlay.set_overlay_enabled(
+			tool_name == "axe" or tool_name == "mine" or InventoryManager.is_placeable(tool_name))
 
 
 func _get_hotbar() -> Control:
